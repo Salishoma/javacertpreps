@@ -1,7 +1,6 @@
-package examsim.functionalinterfaces;
+package src.examsim.functionalinterfaces;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 interface Creator<T, R> {

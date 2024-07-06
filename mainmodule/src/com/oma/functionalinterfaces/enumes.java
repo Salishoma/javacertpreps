@@ -1,4 +1,4 @@
-package com.oma.functionalinterfaces;
+package src.com.oma.functionalinterfaces;
 
 public enum enumes {
 }

@@ -1,9 +1,8 @@
-package com.oma;
+package src.com.oma;
 
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.*;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class maxArea {

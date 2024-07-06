@@ -1,4 +1,4 @@
-package initialization;
+package src.initialization;
 
 /**
  * This is initialization.Animal class

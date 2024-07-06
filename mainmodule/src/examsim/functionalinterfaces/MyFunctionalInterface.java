@@ -1,4 +1,4 @@
-package examsim.functionalinterfaces;
+package src.examsim.functionalinterfaces;
 
 @FunctionalInterface
 public interface MyFunctionalInterface {

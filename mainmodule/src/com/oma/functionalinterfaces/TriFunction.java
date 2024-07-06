@@ -1,4 +1,4 @@
-package com.oma.functionalinterfaces;
+package src.com.oma.functionalinterfaces;
 
 @FunctionalInterface
 public interface TriFunction <S,T,U,R>{

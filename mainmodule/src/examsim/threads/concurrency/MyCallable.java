@@ -1,4 +1,4 @@
-package examsim.threads.concurrency;
+package src.examsim.threads.concurrency;
 
 import java.util.ArrayList;
 import java.util.List;

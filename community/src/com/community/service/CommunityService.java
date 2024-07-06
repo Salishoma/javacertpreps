@@ -1,6 +1,6 @@
-package com.community.service;
+package src.com.community.service;
 
-import module.service.AvailableService;
+import src.module.service.AvailableService;
 
 public class CommunityService implements AvailableService {
 

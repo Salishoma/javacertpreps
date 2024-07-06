@@ -1,4 +1,4 @@
-package examsim;
+package src.examsim;
 
 public class MyStringBuilder {
 

@@ -1,6 +1,5 @@
-package examsim.enums;
+package src.examsim.enums;
 
-import java.util.function.IntFunction;
 
 public enum Sports {
     FOOTBALL("Football"), BASKETBALL("Basketball");
@@ -11,7 +10,6 @@ public enum Sports {
 
         new StringBuilder().trimToSize();
         this.sports = sports;
-//        "".isN
     }
 
     public String getSports() {

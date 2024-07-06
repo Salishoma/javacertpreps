@@ -1,4 +1,4 @@
-package miscellaneous;
+package src.miscellaneous;
 
 import java.nio.file.Paths;
 import java.util.Arrays;

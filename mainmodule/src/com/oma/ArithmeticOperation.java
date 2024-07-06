@@ -1,4 +1,4 @@
-package com.oma;
+package src.com.oma;
 
 import java.util.function.BinaryOperator;
 

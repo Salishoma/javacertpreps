@@ -1,4 +1,4 @@
-package initialization;
+package src.initialization;
 
 public class Dog {
     public Dog() {

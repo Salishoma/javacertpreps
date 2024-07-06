@@ -1,4 +1,4 @@
-package examsim.fileio;
+package src.examsim.fileio;
 
 import java.io.IOException;
 import java.nio.file.Files;

@@ -1,4 +1,4 @@
-package examsim.fileio.permission;
+package src.examsim.fileio.permission;
 
 import java.io.FilePermission;
 import java.security.PermissionCollection;

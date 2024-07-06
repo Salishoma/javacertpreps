@@ -1,9 +1,8 @@
-package com.oma;
+package src.com.oma;
 
-import com.oma.functionalinterfaces.TriFunction;
-import com.oma.stream.OmaStream;
+import src.com.oma.functionalinterfaces.TriFunction;
+import src.com.oma.stream.OmaStream;
 
-import java.nio.file.DirectoryStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;

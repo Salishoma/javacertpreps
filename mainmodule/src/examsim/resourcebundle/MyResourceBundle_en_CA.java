@@ -1,4 +1,4 @@
-package examsim.resourcebundle;
+package src.examsim.resourcebundle;
 
 import java.util.ListResourceBundle;
 

@@ -1,9 +1,7 @@
-package com.oma.stream;
+package src.com.oma.stream;
 
-import com.oma.functionalinterfaces.OmaConsumer;
-import com.oma.functionalinterfaces.OmaFunction;
-
-import java.util.function.Function;
+import src.com.oma.functionalinterfaces.OmaConsumer;
+import src.com.oma.functionalinterfaces.OmaFunction;
 
 public class OmaStream<T> {
     private T t;

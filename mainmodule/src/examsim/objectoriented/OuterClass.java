@@ -1,4 +1,4 @@
-package examsim.objectoriented;
+package src.examsim.objectoriented;
 
 public class OuterClass {
     private String name;

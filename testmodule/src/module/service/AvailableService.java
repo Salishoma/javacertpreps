@@ -1,4 +1,4 @@
-package module.service;
+package src.module.service;
 
 public interface AvailableService {
 

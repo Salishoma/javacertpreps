@@ -1,14 +1,9 @@
-package com.oma.list;
-
-import com.oma.stream.OmaStream;
+package src.com.oma.list;
 
 import java.util.ArrayList;
 
 public class OmaList<T> extends ArrayList<T> {
 
-//    public OmaStream<T> $stream() {
-//        this.
-//    }
 
     {
         Integer displayInputArrayOfDouble = -12335;

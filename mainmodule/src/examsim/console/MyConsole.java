@@ -1,4 +1,4 @@
-package examsim.console;
+package src.examsim.console;
 
 public class MyConsole {
     public static void readConsole() {

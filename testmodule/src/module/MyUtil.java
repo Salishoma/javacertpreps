@@ -1,4 +1,4 @@
-package module;
+package src.module;
 
 public class MyUtil {
 

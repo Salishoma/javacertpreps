@@ -1,23 +1,13 @@
-package consume;
+package src.consume;
 
-import module.service.AvailableService;
-
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.util.ServiceLoader;
 import java.util.function.LongFunction;
 import java.util.function.LongUnaryOperator;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import module.MyUtil;
 
 public class Main {
     public static void main(String[] args) {
-//        IntStream stream = "OCP".chars();
-//        stream.forEach(c -> System.out.print((char)c));
 
         var list1 = List.of("BC"); //Line n1
         var list2 = List.of("A"); //Line n2

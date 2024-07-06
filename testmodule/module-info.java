@@ -1,5 +1,5 @@
 module testmodule {
     requires java.sql;
-    exports module;
-    exports module.service;
+    exports src.module;
+    exports src.module.service;
 }

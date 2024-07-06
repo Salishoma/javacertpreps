@@ -1,4 +1,4 @@
-package examsim.threads.concurrency;
+package src.examsim.threads.concurrency;
 
 
 import java.util.concurrent.ForkJoinPool;
@@ -9,7 +9,6 @@ public class Adder {
     private static final int THREADS = 100;
 
     public static ForkJoinPool forkJoinPool = new ForkJoinPool(2);
-//    ForkJoinPool forkJoinPool = PoolUtil.forkJoinPool;
 
     static class AdderTask extends RecursiveTask<Long> {
 

@@ -1,4 +1,4 @@
 module community {
     requires testmodule;
-    provides module.service.AvailableService with com.community.service.CommunityService;
+    provides src.module.service.AvailableService with src.com.community.service.CommunityService;
 }

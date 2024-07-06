@@ -1,6 +1,6 @@
-package com.premium.service;
+package src.com.premium.service;
 
-import module.service.AvailableService;
+import src.module.service.AvailableService;
 
 public class PremiumService implements AvailableService {
 

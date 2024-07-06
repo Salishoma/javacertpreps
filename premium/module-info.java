@@ -1,4 +1,4 @@
 module premium {
     requires testmodule;
-    provides module.service.AvailableService with com.premium.service.PremiumService;
+    provides src.module.service.AvailableService with src.com.premium.service.PremiumService;
 }
