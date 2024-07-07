@@ -97,6 +97,30 @@ This error occurs when the same package is present in modules that are been impl
 - **patch-com.lib.module** – Add or override classes in a modules
 - **illegal-access=permit|warn|deny** – Either relax strong encapsulation by showing a single global warning, shows every warning, or fails with errors. The default is permit.
 
+If a request is made from an automatic module to load a type whose package is not defined in any known module then the module system will attempt to load it from the classpath.
+
+Unnamed module reads every other module. In other words, a class in an unnamed module can access all exported types of all modules.
+
+A named module cannot access any random class from the classpath. If your named module requires access to a non-modular class, you must put the non-modular class/jar on module-path and load it as an automatic module.
+Further, you must also put an appropriate "requires" clause in your module-info.
+
+Bottom Up Approach for modularizing an application  While modularizing an app using the bottom-up approach, you need to convert lower level libraries i.e. dependencies into modular jars before you can convert the higher level libraries. 
+For example, if a class in A.jar directly uses a class from B.jar, and a class in B.jar directly uses a class from C.jar, you need to first modularize C.jar and then B.jar before you can modularize A.jar.  
+Thus, bottom up approach is possible only when the dependencies are modularized already. Effectively, when bottom-up migration is complete, every class/package of an application is put on the module-path. Nothing is left on the classpath.  
+Top Down Approach for modularising an application  While modularizing an app in a top-down approach, you need to remember the following points -  
+1. Any jar file can be converted into an automatic module by simply putting that jar on the module-path instead of the classpath. Java automatically derives the name of this module from the name of the jar file. An automatic module implicitly exports all of its packages.  
+2. Any jar that is put on classpath (instead of module-path) is loaded as a part of the unnamed module. The unnamed module implicitly exports all of its packages.  
+3. An explicitly named module (which means, a module that has an explicitly defined name in its module-info.java file) can specify dependency on an automatic module just like it does for any other module 
+i.e. by adding a requires <module-name>; clause in its module info but it cannot do so for the unnamed module because there is no way to write a requires clause without a name. In other words, an explicitly named module can "read" classes present in an automatic module 
+using an appropriate requires clause but cannot read classes in the unnamed module by any means.  
+4. An automatic module exports all of its packages and is allowed to read all packages exported by other modules. Thus, a class in an automatic module can access: all packages of other automatic modules + all packages exported by explicitly named modules + all packages of the unnamed module.  
+5. The unnamed module exports all of its packages and is allowed to read all packages exported by other modules. 
+Thus, a class in the unnamed module can access: all packages of the unnamed module + all packages of automatic modules + all packages exported by explicitly named modules.   Thus, if your application jar A directly uses a class from another jar B, then you would have to convert B into a module (either named or automatic). 
+If B uses another jar C, then you can leave C on the class path if B hasn't yet been migrated into a named module. Otherwise, you would have to convert C into an automatic module as well.  Note: There are two possible ways for an automatic module to get its name: 
+1. When an Automatic-Module-Name entry is available in the manifest, its value is the name of the automatic module.
+2. Otherwise, a name is derived from the JAR filename (see the ModuleFinder JavaDoc for the derivation algorithm) - Basically, hyphens are converted into dots and the version number part is ignored. So, for example, if you put mysql-connector-java-8.0.11.jar on module path, its module name would be mysql.connector.java
+
+
 ### Java I/O
 Files.move(Path source, Path target, CopyOption... options) method throws following exceptions-
 
@@ -299,3 +323,121 @@ All the classes in this package are immutable and thread-safe.
 
 ###final class
 All methods in a final class are implicitly final.
+All primitive wrappers are final classes, though java.lang.Number is not final, Integer, Long, Double etc. extends Number.\
+java.lang.System is final as well
+
+###Indent
+JDK 12 introduced indent() method in Java.lang.String class. This method is useful to add or remove white spaces from the beginning of 
+the line to adjust indentation for each string line.
+
+When a string is provided to indent() method,
+
+1. It calls lines() function
+2. Then, for each line, does indentation based on integer value provided as per user cases discussed below:
+   1. If n>0 (Positive)
+      1. Then n white spaces are added at the starting of each line and each line is suffixed with “\n”.
+   2. If n==0 
+      1. Then the indentation remains as it is, only line is suffixed with “\n”.
+   3. If n<0 (Negative), then 
+      1. If (+n) > leading white spaces available\
+               Then all leading white spaces are removed for each line and each line is suffixed with “\n”
+      2. If (+n) < leading white spaces available\
+               Then (+n) leading white spaces are removed for each line and each line is suffixed with “\n”
+3. Then, suffix each line with “\n”.
+4. Then, concatenates resulting string lines and returns
+
+###StripIndent
+Introduced in Java 12 as a part of JEP 355.
+
+- Useful for adjusting the indentation of multi-line strings.
+
+- It strips leading and trailing white spaces and adjusts indentation.
+
+- This method is particularly beneficial when working with text blocks, which were also introduced in Java 12.
+
+### Function
+java.util.function package contains int, double, and long (but no float) versions of all the functional interfaces. For example, 
+there is an IntFunction, a DoubleFunction, and a LongFunction, which are int, double, and long, versions of Function.
+
+These functions are used along with primitive specialized versions of streams such as IntStream, DoubleStream, and LongStream.
+
+###Sealed classes
+```java 
+public abstract sealed class DocType { }
+```
+Ideally, a sealed class must have a permits clause but there is an exception to this rule. If you define a subclass of a sealed class in the same source file, the permits clause is not needed. For example, if the Java source file containing the above definition also contains the following definition, the above definition would be valid: final class Pdf extends DocType{ }
+A sealed class can never be final.
+
+###Records
+Important points on Java records  A record declaration specifies a new record class, a restricted kind of class that defines a simple aggregate of values. A record declaration implicitly creates instance fields, which are private and final. It also implicitly creates public accessor methods for these fields. Together, the fields and the corresponding methods are called record "components". An accessor method is a method with the same name as the record field and an empty formal parameter list. Such methods act as the getter methods for those fields. For example:
+```java
+public record Student(
+int id, //record component
+String name //record component
+) //record header
+{ } //record body
+```
+This is roughly equivalent to the following class:
+```java
+public final class Student extends Record
+{
+private final int id; //component field
+private final String name; //component field
+public Student(int id, String name){  //canonical constructor
+this.id = id;
+this.name = name;
+}
+
+public int id(){ return id; } //accessor
+public String name(){ return name; } //accessor
+
+//hashCode, equals, and toString methods are also provided by the compiler.
+}
+```
+Observe that the accessor methods do not follow the JavaBeans convention (where a getter method is prefixed with get). Further, observe that instance fields are final and the class does not have any setters.  
+**<center>Basic Rules</center>**
+1. You can define a top level record i.e. directly under a package, a nested member record class i.e. within a class/interface, or a local record i.e. within a method. 
+2. A nested record class is implicitly static. That is, every member record class and local record class is static. It is permitted for the declaration of a member record class to redundantly specify the static modifier, but it is not permitted for the declaration of a local record class. 
+3. A record class is implicitly final. It is permitted for the declaration of a record class to redundantly specify the final modifier. 
+4. Records cannot be marked abstract, sealed, or non-sealed. 
+5. The direct superclass type of record class is Record. Thus, a record cannot have an extends clause and so it cannot extend any other class.
+6. The serialization mechanism treats instances of a record class differently than ordinary serializable or externalizable objects. In particular, a record object is deserialized using the canonical constructor.
+
+The body of a record declaration may contain constructor and member declarations as well as static initializers. But there are some restrictions as well:
+1. It cannot contain an instance field declaration (static fields are allowed).
+2. It cannot have an instance initializer (static initializers are allowed).
+3. It cannot have abstract or native methods.
+
+**Constructors and methods**
+1. If a canonical constructor is not provided by the programmer explicitly, the compiler will provide one automatically with the same access modifier as that of the record itself. It takes the same arguments as the record components and initializes all the components. This is called the canonical constructor. See example above.
+2. A programmer may provide the canonical constructor in regular form (just like the way you define a constructor for any regular class) or in a "compact form" like this:
+```java
+public record Student(int id, String name) { 
+    public Student{ 
+        if(id <0) {
+            throw new IllegalArgumentException();
+        }
+    }
+}
+```
+3. After the last line of the compact constructor, all component fields of the record class are implicitly initialized to the values of the corresponding formal parameters specified in the call to new.
+If you write a non-canonical constructor in a record explicitly then, on the first line of such a constructor, you must provide a call to either the canonical constructor or another constructor. For example:
+```java
+public record Student(int id, String name){
+    public Student(){ //a non-canonical constructor
+        this(10); //this line or a call to the canonical constructor is required
+    }
+    public Student(int id){ //another non-canonical constructor
+        this(id, ""); //this line is required
+    }
+    public Student(int id, String name){ //regular form canonical constructor
+        this.id = id; this.name=name;
+    }
+}
+```
+4. An important difference between a record and a regular class with respect to constructors is that the compiler provides a canonical constructor for a record even when the programmer provides a non-canonical constructor and does not provide the canonical constructor. In a regular class, the compiler does not provide the default no-args constructor if the programmer provides any other constructor for the class.
+5. A canonical constructor cannot be generic.
+6. A canonical constructor cannot have a throws clause (not even a throws clause with unchecked exceptions is allowed) but a non-canonical constructor may have a throws clause.
+7. Accessor methods must not throw any exceptions.
+8. You may have other methods in a record as needed. In this respect, a record is like any other class.
+9. It is a compile-time error for a record declaration to declare a record component with the name clone, finalize, getClass, hashCode, notify, notifyAll, toString, or wait. Observe that all these are public or protected methods of Object class
