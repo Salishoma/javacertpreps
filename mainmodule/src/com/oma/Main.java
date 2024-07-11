@@ -1,13 +1,22 @@
 package src.com.oma;
 import java.text.DecimalFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
 
     public static void main(String[] args) {
 	// write your code here
         System.out.println("Welcome!!");
-        arithmeticOperation();
+        float f = 1234567890;
+        System.out.println("f: " + (int)f);
+        int c = 0;
+        long hours = TimeUnit.MINUTES.toHours(1440);
+        long minutes = TimeUnit.MINUTES.toMinutes(1440) - TimeUnit.MINUTES.toMinutes(hours);
+        JACK: while (c < 8){
+            JILL: System.out.println("c = "+c);
+            for(int k = 0; k<c; k++){ System.out.println(" k = "+k+" c = "+c); if (c > 3) break JACK; } c++; }
+//        arithmeticOperation();
 //        new IllegalStateException("");
     }
 

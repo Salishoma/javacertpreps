@@ -362,14 +362,18 @@ there is an IntFunction, a DoubleFunction, and a LongFunction, which are int, do
 These functions are used along with primitive specialized versions of streams such as IntStream, DoubleStream, and LongStream.
 
 ###Sealed classes
+The release of Java SE 17 introduced sealed classes (JEP 409). This feature enables more fine-grained inheritance control in Java.
+N.B.: Sealed classes were introduced as a preview in Java 15
 ```java 
 public abstract sealed class DocType { }
 ```
-Ideally, a sealed class must have a permits clause but there is an exception to this rule. If you define a subclass of a sealed class in the same source file, the permits clause is not needed. For example, if the Java source file containing the above definition also contains the following definition, the above definition would be valid: final class Pdf extends DocType{ }
+Ideally, a sealed class must have a 'permits' clause but there is an exception to this rule. If you define a subclass of a sealed class in the same source file, the 'permits' clause is not needed. 
+For example, if the Java source file containing the above definition also contains the following definition, the above definition would be valid: final class Pdf extends DocType{ }
 A sealed class can never be final.
 
 ###Records
-Important points on Java records  A record declaration specifies a new record class, a restricted kind of class that defines a simple aggregate of values. A record declaration implicitly creates instance fields, which are private and final. It also implicitly creates public accessor methods for these fields. Together, the fields and the corresponding methods are called record "components". An accessor method is a method with the same name as the record field and an empty formal parameter list. Such methods act as the getter methods for those fields. For example:
+Record wa introduced in Java 14, important points on Java records.\
+A record declaration specifies a new record class, a restricted kind of class that defines a simple aggregate of values. A record declaration implicitly creates instance fields, which are private and final. It also implicitly creates public accessor methods for these fields. Together, the fields and the corresponding methods are called record "components". An accessor method is a method with the same name as the record field and an empty formal parameter list. Such methods act as the getter methods for those fields. For example:
 ```java
 public record Student(
 int id, //record component
@@ -409,12 +413,12 @@ The body of a record declaration may contain constructor and member declarations
 3. It cannot have abstract or native methods.
 
 **Constructors and methods**
-1. If a canonical constructor is not provided by the programmer explicitly, the compiler will provide one automatically with the same access modifier as that of the record itself. It takes the same arguments as the record components and initializes all the components. This is called the canonical constructor. See example above.
+1. If a canonical constructor is not provided by the programmer explicitly, the compiler will provide one automatically with the same access modifier as that of the record itself. It takes the same arguments as the record components and initializes all the components. This is called the canonical constructor. See example below.
 2. A programmer may provide the canonical constructor in regular form (just like the way you define a constructor for any regular class) or in a "compact form" like this:
 ```java
 public record Student(int id, String name) { 
     public Student{ 
-        if(id <0) {
+        if(id < 0) {
             throw new IllegalArgumentException();
         }
     }
@@ -431,7 +435,8 @@ public record Student(int id, String name){
         this(id, ""); //this line is required
     }
     public Student(int id, String name){ //regular form canonical constructor
-        this.id = id; this.name=name;
+        this.id = id; 
+        this.name=name;
     }
 }
 ```
@@ -441,3 +446,38 @@ public record Student(int id, String name){
 7. Accessor methods must not throw any exceptions.
 8. You may have other methods in a record as needed. In this respect, a record is like any other class.
 9. It is a compile-time error for a record declaration to declare a record component with the name clone, finalize, getClass, hashCode, notify, notifyAll, toString, or wait. Observe that all these are public or protected methods of Object class
+
+### Databases
+
+When a connection is created, it is in auto-commit mode. i.e. auto-commit is enabled. This means that each individual SQL statement is treated as a transaction and is automatically committed right after it is completed. 
+(A statement is completed when all of its result sets and update counts have been retrieved. In almost all cases, however, a statement is completed, and therefore committed, right after it is executed.)  
+The way to allow two or more statements to be grouped into a transaction is to disable the auto-commit mode. Since it is enabled by default, you have to explicitly disable it after creating a connection by calling con.setAutoCommit(false);
+
+To load a JDBC driver in JDBC 1.3, the application code would have to load the Driver class explicitly using Class.forName method, for example - Class.forName("com.xyz.jdbc.Driver"). However, with JDBC 4.0, applications no longer need to do this.\
+There has never been any restriction on how many JDBC Drivers are allowed to be loaded by an application. If your application connects to say 3 different databases, you can load three different Drivers.
+
+Applications no longer need to explicitly load JDBC drivers using Class.forName().  The DriverManager methods getConnection and getDrivers have been enhanced to support the Java Standard Edition Service Provider mechanism. JDBC 4.0 Drivers must include the file META-INF/services/java.sql.Driver. 
+This file contains the name of the JDBC drivers implementation of java.sql.Driver. For example, to load the my.sql.Driver class, the META-INF/services/java.sql.Driver file would contain the entry:
+``my.sql.Driver``\
+When the method getConnection is called, the DriverManager will attempt to locate a suitable driver from amongst those loaded at initialization and those loaded explicitly using the same classloader as the current applet or application.
+
+###Stored Procedures
+java.sql.CallableStatement extends PreparedStatement and it is used to execute SQL stored procedures. It allows stored procedures to be called in a standard way for all RDBMSs.
+
+Remember that in addition to having setXXX(i.e. setString, setDate, setInt etc.) and setObject methods with parameter index as the first parameter, (CallableStatement inherits these from PreparedStatement), the CallableStatement interface also has setXXX and setObject methods with parameter name as the first argument. 
+For example:   callableStatement.setString("NAME", "john", java.sql.Types.VARCHAR);//valid\
+callableStatement.setString(1, "john", java.sql.JDBCType.VARCHAR); //valid, //because it is inherited from PreparedStatement\
+preparedStatement.setString("NAME", "john", java.sql.Types.VARCHAR); //will NOT compile\
+preparedStatement.setString(1, "john", java.sql.Types.VARCHAR); //valid\
+Note that the third argument can be an int (the ones defined in java.sql.Types) or a java.sql.JDBCType enum value (such as JDBCType.VARCHAR) because setObject is overloaded to accept either one.
+
+###Packages and Classes
+The modifier static pertains only to member classes, not to top level or local or anonymous classes. That is, only classes declared as members of top-level classes can be declared static. 
+Package member classes, local classes (i.e. classes declared in methods) and anonymous classes cannot be declared static. Classes and variables can't be declared native. Only methods can be native.
+
+###Switch
+A switch works with the byte , short , char , and int primitive data types. It also works with enumerated types (discussed in Enum Types), the String class, and a few special classes that wrap certain primitive types: Character , Byte , Short , and Integer (discussed in Numbers and Strings). However,
+Boolean, long , float , and double types are prohibited.
+
+### Pattern Matching
+Pattern Matching was introduced in Java 14.

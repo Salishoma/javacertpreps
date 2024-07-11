@@ -9,6 +9,16 @@ public class MyString {
                 string with
                     inconsistent
                 indentation.""";
+
+        int length = "This is an example".length();
+        int length1 = "    of a multi-line".length();
+        int length2 = "string with".length();
+        int length3 = "    inconsistent".length();
+        int length4 = " indentation.".length();
+
+        System.out.println("Space length: " + "        ".length());
+        System.out.println("Length: " + (length + length1 + length2 + length3 + length4));
+        System.out.println("Length: " + str.length());
         myStripIndent(str);
 
         String input
