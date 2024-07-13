@@ -8,6 +8,19 @@ public class Miscellaneous {
 
     public static void main(String[] args) {
         List<Integer> list = Arrays.asList(0,2,4,6,8);
+        String firstName = "Oma";
+        final String lastName = "Shadu";
+        String name = firstName + lastName;
+        String Shadu = firstName + "Shadu";
+        String oma = "Oma" + "Shadu";
+        String oma1 = "Oma" + lastName;
+        System.out.println(name == Shadu);
+        System.out.println(oma == name);
+        System.out.println(name == oma1);
+        System.out.println(Shadu == oma1);
+        System.out.println(Shadu == oma);
+        System.out.println(oma == oma1);
+
         Paths.get("a");
         list.replaceAll(i -> i + 1);
         System.out.println(list);

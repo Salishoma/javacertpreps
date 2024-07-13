@@ -154,6 +154,12 @@ Method-local inner class can be defined inside methods(static and non-static) an
 Before Java 16,  regular inner class and method-local inner class cannot define anything static, except static final variables, but since Java 16, they are allowed to have static fields that
 are compiled time constants as members(They can't have static methods though).
 
+Note the difference between an inner class and a static nested class. Inner class means a NON STATIC class defined inside a class. Remember:
+- A nested class is any class whose declaration occurs within the body of another class or interface.
+- A top level class is a class that is not a nested class.
+- An inner class is a nested class that is not explicitly or implicitly declared static.
+- A class defined inside an interface is implicitly static.
+
 ### Nested Interfaces
 An interface that is declared within another interface or class, is known as a nested interface.
 * The nested interface must be public if it is declared inside the interface, but it can have any access modifier if declared within the class.
@@ -481,3 +487,10 @@ Boolean, long , float , and double types are prohibited.
 
 ### Pattern Matching
 Pattern Matching was introduced in Java 14.
+
+### Callable and Runnable
+- A Callable cannot be passed to Thread for Thread creation but a Runnable can be. i.e. new Thread( aRunnable ); is valid. But new Thread( aCallable ); is not. Therefore, if you want to execute a task directly in a Thread, a Callable is not suitable. 
+You will need to use a Runnable. You can achieve the same by using an ExecutorService.submit( aCallable ), but in this case, you are not controlling the Thread directly.
+- Both Callable and Runnable can be used to execute a task asynchronously. If the task does not return any result, neither is more appropriate than the other. However, if the task returns a result, which you want to collect asynchronously later, Callable is more appropriate.
+- Both can be used with an ExecutorService because ExecutorService has overloaded submit methods: <T> Future<T> submit(Callable<T> task) and Future<?> submit(Runnable task) Observe that even though a Runnable's run() method cannot return a value, the ExecutorService.submit(Runnable) returns a Future. The Future's get method will return null upon successful completion.
+- The run method of Runnable does not throw an exception but the call method of Callable throws exception.
